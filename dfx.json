@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "landranger_backend": {
+      "main": "src/landranger_backend/main.mo",
+      "type": "motoko"
+    },
+    "landranger_frontend": {
+      "dependencies": [
+        "landranger_backend"
+      ],
+      "source": [
+        "src/landranger_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "landranger_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
