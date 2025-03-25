@@ -1,30 +1,26 @@
-import { useState } from 'react';
-import { landranger_backend } from 'declarations/landranger_backend';
+import { Routes, Route, Router } from "react-router";
+import "./App.css";
+import Home from "./Home";
+import { Navbar } from "./components/Navbar";
+import Footer from "./components/Footer";
+import Admin from "./Admin";
+import CreateNFT from "./CreateNFT";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    landranger_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
+  // const [count, setCount] = useState(0);
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <div data-theme="cerah">
+      <Navbar />
+      <main className="pt-16">
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/create-nft" element={<CreateNFT />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
