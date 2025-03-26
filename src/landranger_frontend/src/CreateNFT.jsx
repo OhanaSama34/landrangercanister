@@ -1,6 +1,5 @@
-import React from "react";
-import hiasan from "./assets/hiasan.png";
-import { IconChevronLeft } from "@tabler/icons-react";
+import hiasan from './assets/hiasan.png';
+// import { IconChevronLeft } from '@tabler/icons-react';
 
 const CreateNFT = () => {
   return (
@@ -23,7 +22,7 @@ const CreateNFT = () => {
           href="/admin"
           className="btn btn-link mb-4 flex items-center gap-2 w-fit p-0"
         >
-          <IconChevronLeft className="-ml-2 -mr-1 scale-80" /> Back
+          {/* <IconChevronLeft className="-ml-2 -mr-1 scale-80" /> Back */}
         </a>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
