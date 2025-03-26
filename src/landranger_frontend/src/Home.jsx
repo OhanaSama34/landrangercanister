@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import bgHero from './assets/bg-hero.png';
 import hiasan from './assets/hiasan.png';
 import landRanger1 from './assets/LandRanger1.png';
-import landRanger2 from './assets/landRanger2.png';
+import landRanger2 from './assets/LandRanger2.png';
 import feature1 from './assets/feature1.png';
 import feature2 from './assets/feature2.png';
 import { IconPlayerPlay } from '@tabler/icons-react';
@@ -44,7 +44,7 @@ const Home = () => {
             <h1 className="mb-5 text-5xl font-bold ">
               Protect Your Land Ownership From Mafia
             </h1>
-            <p className="mb-5 text-gray-600">
+            <p className="mb-5 text-gray-600 font-semibold">
               Secure your building and land into NFT easily with us, protect
               your ownership now!
             </p>
@@ -68,17 +68,18 @@ const Home = () => {
           className="col-span-2 prose"
         >
           <div className="sticky top-0">
-            <h2>About LandRanger</h2>
-            <p>
-              We are more than just platform. We build partnerships with a
-              shared passion and an unwavering commiment to protecting your land
-              and home.
+            <h2 className="text-3xl">About LandRanger</h2>
+            <p className="text-lg text-justify">
+            LandRanger is a dedicated team working to safeguard 
+            land and building ownership, ensuring protection from 
+            fraud, illegal claims, and the threats posed by the 
+            land mafia.
             </p>
           </div>
         </div>
         <div
           id="about-vision-mission"
-          className="col-span-3 flex flex-col items-end gap-4 prose"
+          className="col-span-3 flex flex-col items-end gap-4 prose mt-8"
         >
           <div
             className="card bg-primary text-primary-content overflow-hidden w-full md:w-128 rounded-3xl"
@@ -90,7 +91,7 @@ const Home = () => {
               Vision
             </div>
             <div className="card-body">
-              <p>
+              <p className="text-white">
                 To be a pioneer in the protection of transparent, safe, and
                 equitable land ownership rights by utilizing innovative
                 technology to prevent land mafia practices and ensure legal
@@ -108,7 +109,7 @@ const Home = () => {
               Mision
             </div>
             <div className="card-body">
-              <p>
+              <p className="text-white">
                 Being a pioneer in efforts to protect and secure land ownership
                 rights from the threat of the land mafia, by presenting a
                 transparent, safe, and technology-based system to ensure justice
@@ -175,7 +176,7 @@ const Home = () => {
               className="bg-base-100 border-base-300 collapse collapse-plus border"
             >
               <input type="checkbox" className="peer" />
-              <div className="collapse-title font-semibold bg-primary text-primary-content">
+              <div className="collapse-title font-semibold bg-[#2E0E58] text-white">
                 {faq.question}
               </div>
               <div className="collapse-content">

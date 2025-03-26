@@ -45,7 +45,7 @@ export const Navbar = () => {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">
+        <a className="btn btn-ghost text-2xl font-bold">
           Land<span className="text-purple-600 -ml-2">Ranger</span>
         </a>
       </div>
