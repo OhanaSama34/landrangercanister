@@ -12,9 +12,9 @@ import { IconBurger } from '@tabler/icons-react';
 
 const network = process.env.DFX_NETWORK;
 const identityProvider =
-  network === 'ic'
+  network === 'local'
     ? 'https://identity.ic0.app' // Mainnet
-    : 'http://be2us-64aaa-aaaaa-qaabq-cai.localhost:4943'; // Local
+    : 'http://bd3sg-teaaa-aaaaa-qaaba-cai.localhost:4943'; // Local
 function App() {
   const [state, setState] = useState({
     actor: undefined,

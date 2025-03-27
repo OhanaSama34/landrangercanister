@@ -30,7 +30,8 @@ actor class LandRegistrySystem() = this {
     tokenId : TokenId;
   };
 
-  public type HakType = { #HM; #HGB; #HP; #HGU; #HPL; };
+  // public type HakType = { #HM; #HGB; #HP; #HGU; #HPL; };
+  public type HakType = Text;
   public type BatasTanah = { utara : Text; selatan : Text; timur : Text; barat : Text; };
   public type LetakBatas = { 
     alamat : Text; 
@@ -75,7 +76,8 @@ actor class LandRegistrySystem() = this {
   // Fungsi mint dengan kepemilikan awal
   public shared({ caller }) func mintLandNFT(
     landData : {
-      jenisHak : HakType;
+      jenisHak : Text;
+      // jenisHak : HakType;
       nomorSertifikat : Text;
       luasTanah : Nat;
       letakBatas : LetakBatas;
