@@ -9,12 +9,13 @@ import { AuthClient } from '@dfinity/auth-client';
 import { createActor } from 'declarations/landranger_backend';
 import { canisterId } from 'declarations/landranger_backend/index.js';
 import { IconBurger } from '@tabler/icons-react';
+import { HttpAgent } from '@dfinity/agent';
 
 const network = process.env.DFX_NETWORK;
 const identityProvider =
-  network === 'local'
+  network === 'ic'
     ? 'https://identity.ic0.app' // Mainnet
-    : 'http://bd3sg-teaaa-aaaaa-qaaba-cai.localhost:4943'; // Local
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943'; // Local
 function App() {
   const [state, setState] = useState({
     actor: undefined,
@@ -29,21 +30,49 @@ function App() {
   }, []);
 
   const updateActor = async () => {
-    const authClient = await AuthClient.create();
-    const identity = authClient.getIdentity();
-    const actor = createActor(canisterId, {
-      agentOptions: {
+    try {
+      const authClient = await AuthClient.create();
+      const identity = authClient.getIdentity();
+      
+      const host = process.env.DFX_NETWORK === 'ic' ? 'https://ic0.app' : 'http://localhost:4943';
+      
+      // Buat agent dengan host yang eksplisit
+      const agent = new HttpAgent({
         identity,
-      },
-    });
-    const isAuthenticated = await authClient.isAuthenticated();
+        host
+      });
+      
+      // Fetch root key di environment lokal
+      if (process.env.DFX_NETWORK !== 'ic') {
+        console.log('Fetching root key in App component');
+        try {
+          await agent.fetchRootKey();
+          console.log('Root key fetched successfully in App');
+        } catch (error) {
+          console.error('Error fetching root key in App:', error);
+        }
+      }
+      
+      // Gunakan canisterId yang hardcoded sebagai fallback
+      const backendCanisterId = canisterId || "bkyz2-fmaaa-aaaaa-qaaaq-cai";
+      console.log('Using canister ID:', backendCanisterId);
+      
+      const actor = createActor(backendCanisterId, {
+        agent
+      });
+      
+      const isAuthenticated = await authClient.isAuthenticated();
+      console.log('Authentication status:', isAuthenticated);
 
-    setState((prev) => ({
-      ...prev,
-      actor,
-      authClient,
-      isAuthenticated,
-    }));
+      setState((prev) => ({
+        ...prev,
+        actor,
+        authClient,
+        isAuthenticated,
+      }));
+    } catch (error) {
+      console.error('Error in updateActor:', error);
+    }
   };
 
   const login = async () => {
