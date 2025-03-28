@@ -71,24 +71,32 @@ dfx deploy
 Why is redeployment necessary? Previous deployments are useful for building frontend and backend declarations that will be useful for connecting between the two.
 
 ### NOTE
-Jika fitur aplikasi seperti login dan create NFT tidak berjalan maka pastikan port NETWORK pada `App.jsx` and `CreateNFT.jsx` sama dengan port lokal yang dijalankan di terminal, contoh :
+If application features such as login and create NFT do not run then make sure the port in the `network` and `localhost` variables in `App.jsx` and `CreateNFT.jsx` is the same as the local port run in the terminal, for example :
 
 ```jsx
+// Network
 const network = process.env.DFX_NETWORK;
 const identityProvider =
   network === 'ic'
     ? 'https://identity.ic0.app'
-    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943'; 
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943';
+
+// Localhost
+const LOCAL_HOST = "http://localhost:4943";
 ```
 
-diganti :
+Replace with :
 
 ```rust
+// Network
 const network = process.env.DFX_NETWORK;
 const identityProvider =
   network === 'ic'
     ? 'https://identity.ic0.app'
-    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:8080'; 
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:8080';
+
+// Localhost
+const LOCAL_HOST = "http://localhost:8080";
 ```
 
 Once the job completes, your application will be ready to use
