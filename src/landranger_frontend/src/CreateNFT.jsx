@@ -1,9 +1,13 @@
 import { useState, useCallback } from 'react';  
-import { Actor, HttpAgent } from '@dfinity/agent';  
+import { HttpAgent } from '@dfinity/agent';  
 import { AuthClient } from '@dfinity/auth-client';  
 import hiasan from './assets/hiasan.png';  
 import { IconChevronLeft } from '@tabler/icons-react';  
-import { idlFactory } from 'declarations/landranger_backend/index.js';  
+import { idlFactory, canisterId as backendCanisterId, createActor } from 'declarations/landranger_backend/index.js';  
+
+// Definisikan host tetap untuk development
+const LOCAL_HOST = "http://localhost:4943";
+const IC_HOST = "https://ic0.app";
 
 const CreateNFT = () => {
   const [formData, setFormData] = useState({
@@ -39,7 +43,9 @@ const CreateNFT = () => {
       if (!await authClient.isAuthenticated()) {  
         await new Promise((resolve, reject) => {  
           authClient.login({  
-            identityProvider: process.env.II_URL || "https://identity.ic0.app",  
+            identityProvider: process.env.DFX_NETWORK === 'ic' 
+              ? "https://identity.ic0.app"
+              : `http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943`, 
             onSuccess: resolve,  
             onError: (error) => {  
               console.error('Login Error:', error);  
@@ -52,32 +58,43 @@ const CreateNFT = () => {
       // Dapatkan identitas  
       const identity = authClient.getIdentity();  
 
-      // Buat agent dengan konfigurasi lebih detail  
+      // Log untuk debugging
+      console.log('Backend canister ID:', backendCanisterId || "bkyz2-fmaaa-aaaaa-qaaaq-cai");
+      console.log('Identity Principal:', identity.getPrincipal().toText());
+      console.log('Host URL:', process.env.DFX_NETWORK === 'ic' ? IC_HOST : LOCAL_HOST);
+
+      // Buat agent dengan konfigurasi hardcoded
+      const host = process.env.DFX_NETWORK === 'ic' ? IC_HOST : LOCAL_HOST;
       const agent = new HttpAgent({   
         identity,  
-        host: process.env.IC_HOST || "https://ic0.app"  
+        host,
       });  
 
-      // Log principal untuk debugging  
-      console.log('Identity Principal:', identity.getPrincipal().toText());  
-
-      // Fetch root key hanya di development  
-      if (process.env.NODE_ENV !== 'production') {  
-        await agent.fetchRootKey().catch(err => {  
-          console.error('Error fetching root key:', err);  
-        });  
+      // Fetch root key SELALU di development/local
+      if (process.env.DFX_NETWORK !== 'ic') {  
+        console.log('Fetching root key for local development');
+        try {
+          await agent.fetchRootKey();
+          console.log('Root key fetched successfully');
+        } catch (fetchError) {
+          console.error('Error fetching root key:', fetchError);
+          throw new Error('Failed to fetch root key: ' + fetchError.message);
+        }
       }  
 
-      // Buat dan kembalikan aktor  
-      return Actor.createActor(idlFactory, {  
-        agent,  
-        canisterId: process.env.CANISTER_ID_LANDRANGER_BACKEND,  
-      });  
+      // Gunakan fungsi createActor dari file declarations dengan host yang sama
+      const actor = createActor(backendCanisterId || "bkyz2-fmaaa-aaaaa-qaaaq-cai", {
+        agent
+      });
+      
+      console.log('Actor created with canister ID:', backendCanisterId || "bkyz2-fmaaa-aaaaa-qaaaq-cai");
+      
+      return actor;
     } catch (error) {  
       console.error('Actor Initialization Error:', error);  
       throw error;  
     }  
-  }, []); // Tambahkan dependency array kosong  
+  }, []);
 
   // [PERUBAHAN UTAMA] Baris 55-116: Perbaikan handleSubmit  
   const handleSubmit = async (e) => {  
@@ -86,25 +103,15 @@ const CreateNFT = () => {
     setError('');  
 
     try {  
-      // Pastikan autentikasi sebelum submit  
-      const authClient = await AuthClient.create();  
-      if (!await authClient.isAuthenticated()) {  
-        await new Promise((resolve, reject) => {  
-          authClient.login({  
-            onSuccess: resolve,  
-            onError: (error) => {  
-              setError('Autentikasi gagal');  
-              setLoading(false);  
-              reject(error);  
-            }  
-          });  
-        });  
-      }  
-
-      // Inisialisasi aktor  
+      // Inisialisasi aktor secara langsung 
       const actor = await initializeActor();  
 
-      // Validasi input (sama seperti sebelumnya)  
+      // Debug information
+      console.log('Actor mintLandNFT available:', {
+        hasMintMethod: typeof actor.mintLandNFT === 'function'
+      });
+
+      // Validasi input
       if (!formData.luasTanah || !formData.nilaiAset) {  
         throw new Error('Luas Tanah and Nilai Aset must be numbers');  
       }  
@@ -132,44 +139,52 @@ const CreateNFT = () => {
       };  
 
       // Logging data submission untuk debugging  
-      console.log('Submission Data:', {  
-        landData,  
-        principal: actor.authentication?.getPrincipal()?.toText() || 'Unknown'  
-      });  
+      console.log('Submitting NFT data:', landData);
 
-      // Panggil fungsi mint  
-      const result = await actor.mintLandNFT(landData);  
+      try {
+        // Panggil fungsi mint dengan catching error spesifik
+        console.log('Calling mintLandNFT...');
+        const result = await actor.mintLandNFT(landData);  
+        console.log('mintLandNFT result:', result);
 
-      // Tangani hasil  
-      if ('ok' in result) {  
-        alert(`NFT Created Successfully! Token ID: ${result.ok}`);  
-        // Reset form  
-        setFormData({  
-          nib: '', nilaiAset: '', provinsi: '', alamat: '',   
-          kabupaten: '', kecamatan: '', timur: '', selatan: '',   
-          utara: '', barat: '', luasTanah: '', jenisHak: '',   
-          nomorSertifikat: '', gambar: '',  
-        });  
-      } else if ('err' in result) {  
-        throw new Error(result.err);  
-      }  
+        // Tangani hasil  
+        if ('ok' in result) {  
+          alert(`NFT Created Successfully! Token ID: ${result.ok}`);  
+          // Reset form  
+          setFormData({  
+            nib: '', nilaiAset: '', provinsi: '', alamat: '',   
+            kabupaten: '', kecamatan: '', timur: '', selatan: '',   
+            utara: '', barat: '', luasTanah: '', jenisHak: '',   
+            nomorSertifikat: '', gambar: '',  
+          });  
+        } else if ('err' in result) {  
+          throw new Error(result.err);  
+        }
+      } catch (mintError) {
+        console.error('Error during mintLandNFT call:', mintError);
+        throw new Error(`NFT creation failed: ${mintError.message}`);
+      }
     } catch (err) {  
       // Logging error terperinci  
-      console.error('Detailed NFT Creation Error:', {  
+      console.error('NFT Creation Error:', {  
         message: err.message,  
         stack: err.stack,  
         name: err.name  
       });  
 
-      // Tangani error spesifik  
+      // Tangani error dengan pesan yang lebih jelas
+      let errorMessage = err.message;
+      
       if (err.message.includes('delegation') || err.message.includes('authentication')) {  
-        setError('Masalah autentikasi. Silakan login ulang.');  
-      } else {  
-        setError(err.message || 'Gagal membuat NFT');  
-      }  
-
-      // Tampilkan alert dengan pesan error  
-      alert(`Error: ${err.message}`);  
+        errorMessage = 'Masalah autentikasi. Silakan login ulang.';
+      } else if (err.message.includes('canister')) {
+        errorMessage = 'Tidak dapat terhubung ke canister. Pastikan canister sedang berjalan.';
+      } else if (err.message.includes('signature')) {
+        errorMessage = 'Masalah validasi tanda tangan. Coba refresh halaman dan login ulang.';
+      }
+      
+      setError(errorMessage);
+      alert(`Error: ${errorMessage}`);
     } finally {  
       setLoading(false);  
     }  
