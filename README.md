@@ -87,7 +87,7 @@ const LOCAL_HOST = "http://localhost:4943";
 
 Replace with :
 
-```rust
+```jsx
 // Network
 const network = process.env.DFX_NETWORK;
 const identityProvider =
