@@ -4,9 +4,22 @@ LandRanger is an ICP Smart Contract (canister) based platform that allows users 
 
 This application's logic is written in [Motoko](https://internetcomputer.org/docs/motoko/main/getting-started/motoko-introduction), a programming language designed specifically for developing canisters on ICP.
 
+## About This Project
+Project LandRanger is a project that departs from the problems of society in Indonesia about the land mafia. The land mafia in Indonesia works by fabricating evidence of ownership because it involves officials in the land sector such as Notary / PPAT, BPN and village governments and is able to authentically prove control and ownership when litigating in court which results in overlapping land ownership.
+
+In order to realize SDGs no.16, namely peace, justice and resilient institutions, a solution was created to utilize blockchain as strong evidence of land and building ownership.
+
+![image](https://github.com/user-attachments/assets/dc806301-8c5f-47a9-98d2-e6a33527c37d)
+
+## Business Model Canvas :
+![image](https://github.com/user-attachments/assets/100f4a20-abb4-4c33-a862-05baec37667b)
+
+## Benchmarking :
+![image](https://github.com/user-attachments/assets/c07cc380-3abc-44a4-a6d8-3575ea55e03a)
+
 ## Project structure
 
-The /src folder contains Motoko Backend and Frontend . Frontend folder contains web assets for the application's user interface. The user interface was written using the React framework.
+The `/src` folder contains Motoko Backend and Frontend. Frontend folder contains web assets for the application's user interface. The user interface was written using the React framework.
 
 To learn more before you start working with `landranger`, see the following documentation available online:
 
