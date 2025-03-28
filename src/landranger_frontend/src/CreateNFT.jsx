@@ -6,7 +6,7 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import { idlFactory, canisterId as backendCanisterId, createActor } from 'declarations/landranger_backend/index.js';  
 
 // Definisikan host tetap untuk development
-const LOCAL_HOST = "http://localhost:4943";
+const LOCAL_HOST = "http://localhost:8080";
 const IC_HOST = "https://ic0.app";
 
 const CreateNFT = () => {
@@ -45,7 +45,7 @@ const CreateNFT = () => {
           authClient.login({  
             identityProvider: process.env.DFX_NETWORK === 'ic' 
               ? "https://identity.ic0.app"
-              : `http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943`, 
+              : `http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:8080`, 
             onSuccess: resolve,  
             onError: (error) => {  
               console.error('Login Error:', error);  

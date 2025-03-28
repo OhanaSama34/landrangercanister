@@ -15,7 +15,7 @@ const network = process.env.DFX_NETWORK;
 const identityProvider =
   network === 'ic'
     ? 'https://identity.ic0.app' // Mainnet
-    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943'; // Local
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:8080'; // Local
 function App() {
   const [state, setState] = useState({
     actor: undefined,
@@ -34,7 +34,7 @@ function App() {
       const authClient = await AuthClient.create();
       const identity = authClient.getIdentity();
       
-      const host = process.env.DFX_NETWORK === 'ic' ? 'https://ic0.app' : 'http://localhost:4943';
+      const host = process.env.DFX_NETWORK === 'ic' ? 'https://ic0.app' : 'http://localhost:8080';
       
       // Buat agent dengan host yang eksplisit
       const agent = new HttpAgent({

@@ -70,8 +70,26 @@ dfx deploy
 
 Why is redeployment necessary? Previous deployments are useful for building frontend and backend declarations that will be useful for connecting between the two.
 
-### Usefull Note : If authentication with ICP is not working try changing the contents of the identitiyProvider in app.jsx. 
-### (From network === 'ic' to network === 'local')
+### NOTE
+Jika fitur aplikasi seperti login dan create NFT tidak berjalan maka pastikan port NETWORK pada `App.jsx` and `CreateNFT.jsx` sama dengan port lokal yang dijalankan di terminal, contoh :
+
+```jsx
+const network = process.env.DFX_NETWORK;
+const identityProvider =
+  network === 'ic'
+    ? 'https://identity.ic0.app'
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:4943'; 
+```
+
+diganti :
+
+```rust
+const network = process.env.DFX_NETWORK;
+const identityProvider =
+  network === 'ic'
+    ? 'https://identity.ic0.app'
+    : 'http://rdmx6-jaaaa-aaaaa-aaadq-cai.localhost:8080'; 
+```
 
 Once the job completes, your application will be ready to use
 If you have made changes to your backend canister, you can generate a new candid interface with
