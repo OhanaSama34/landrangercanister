@@ -1,8 +1,12 @@
-# `landranger`
+# LandRanger
 
-Welcome to your new `landranger` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+LandRanger is an ICP Smart Contract (canister) based platform that allows users to convert land certificates into NFT (Non-Fungible Token) form using the ICRC-7 From ICP standard. The platform aims to increase transparency and security to avoid land and building mafia in ownership by utilizing blockchain technology and smart contracts.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+This application's logic is written in [Motoko](https://internetcomputer.org/docs/motoko/main/getting-started/motoko-introduction), a programming language designed specifically for developing canisters on ICP.
+
+## Project structure
+
+The /src folder contains Motoko Backend and Frontend . Frontend folder contains web assets for the application's user interface. The user interface was written using the React framework.
 
 To learn more before you start working with `landranger`, see the following documentation available online:
 
@@ -19,20 +23,44 @@ dfx help
 dfx canister --help
 ```
 
-## Running the project locally
-
+# Running the project locally
+## How to run this project locally (Recomended From Developer)
 If you want to test your project locally, you can use the following commands:
 
 ```bash
 # Starts the replica, running in the background
-dfx start --background
+dfx start --clean --background
 
 # Deploys your canisters to the replica and generates your candid interface
 dfx deploy
 ```
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+After that you can go to the frontend folder to build the frontend view 
 
+```bash
+# Go to the folder
+cd src/landranger_frontend
+
+# Runnung in the terminal
+npm install
+
+# Running local frontend
+npm start
+```
+
+Then redeploy the canister
+
+```bash
+# Redeploy The Canister
+dfx deploy
+```
+
+Why is redeployment necessary? Previous deployments are useful for building frontend and backend declarations that will be useful for connecting between the two.
+
+### Usefull Note : If authentication with ICP is not working try changing the contents of the identitiyProvider in app.jsx. 
+### (From network === 'ic' to network === 'local')
+
+Once the job completes, your application will be ready to use
 If you have made changes to your backend canister, you can generate a new candid interface with
 
 ```bash
