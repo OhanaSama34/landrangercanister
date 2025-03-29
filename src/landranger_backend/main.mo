@@ -88,7 +88,7 @@ actor class LandRegistrySystem() = this {
   ) : async Result.Result<TokenId, Text> {
     switch (nibRegistry.get(landData.nib)) {
       case (?existingTokenId) {
-        #err("NIB " # landData.nib # " sudah terdaftar dalam NFT dengan ID " # debug_show(existingTokenId))
+        #err("NIB " # landData.nib # " sudah terdaftar dalam NFT")
       };
       case (null) {
         let tokenId = counter;

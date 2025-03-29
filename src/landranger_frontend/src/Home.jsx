@@ -10,7 +10,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import FAQData from './data/data';
 
-const Home = () => {
+const Home = ({ onLogin }) => {
   useEffect(() => {
     AOS.init();
   }, []);
@@ -48,7 +48,10 @@ const Home = () => {
               Secure your building and land into NFT easily with us, protect
               your ownership now!
             </p>
-            <button className="btn btn-primary rounded-full animate-bounce hover:animate-none transition-all shadow">
+            <button
+              className="btn btn-primary rounded-full animate-bounce hover:animate-none transition-all shadow"
+              onClick={onLogin}
+            >
               Get Started{' '}
               <span className="p-1 rounded-full border-2 scale-60 -mx-1 -mr-2 ">
                 <IconPlayerPlay className="text-sm" />
@@ -70,10 +73,9 @@ const Home = () => {
           <div className="sticky top-0">
             <h2 className="text-3xl">About LandRanger</h2>
             <p className="text-lg text-justify">
-            LandRanger is a dedicated team working to safeguard 
-            land and building ownership, ensuring protection from 
-            fraud, illegal claims, and the threats posed by the 
-            land mafia.
+              LandRanger is a dedicated team working to safeguard land and
+              building ownership, ensuring protection from fraud, illegal
+              claims, and the threats posed by the land mafia.
             </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* DaisyUI */
 @plugin "daisyui";
@@ -8,10 +8,10 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui/theme" {
-  name: "cerah";
+  name: 'cerah';
   default: false;
   prefersdark: false;
-  color-scheme: "cerah";
+  color-scheme: 'cerah';
   --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(98% 0 0);
   --color-base-300: oklch(95% 0 0);
@@ -44,6 +44,7 @@
 
 @theme {
   --animate-bounce-smooth: bounce-smooth 3s ease-in-out infinite;
+  --animate-slide-in: slide-in 0.3s ease-out;
 
   @keyframes bounce-smooth {
     0%,
@@ -53,6 +54,17 @@
     }
     50% {
       transform: translateY(-15%);
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
     }
   }
 }
